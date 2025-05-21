@@ -3,7 +3,8 @@ import React, { useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 
 const QRCodeGenerator = () => {
-  const url = "https://web.whatsapp.com"; 
+//   const url = "https://web.whatsapp.com"; 
+  const url = "http://192.168.1.144:3000/matricule";
   const qrRef = useRef(null); // Pour référencer le QR Code
 
   // Fonction pour télécharger l'image du QR Code
