@@ -40,20 +40,20 @@ const MatriculePage = () => {
         
         <div style={{display: 'flex', justifyContent: 'space-between', marginTop:'10px'}}>
         <button
-          onClick={() => navigate('/matricule')}
+          onClick={() => navigate('/list_all_presences')}
           style={styles.button}
         >
-          Aller à l’accueil
+          Liste des présences
         </button>
 
         <div style={{ margin:'10px'}}>          
         </div>
 
          <button
-          onClick={() => navigate('/matricule')}
+          onClick={() => navigate('/employes')}
           style={styles.button}
         >
-          Aller à l’accueil
+          Gestion des employés
         </button>
       </div>
 

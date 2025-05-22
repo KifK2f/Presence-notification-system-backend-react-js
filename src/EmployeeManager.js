@@ -93,7 +93,7 @@ const EmployeeManager = () => {
         <div style={styles.totalCount}>Total : {filteredEmployees.length} employé(s)</div>
         <input
           type="text"
-          placeholder="Rechercher..."
+          placeholder="Rechercher par nom, prénom, matricule..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={styles.searchInput}
