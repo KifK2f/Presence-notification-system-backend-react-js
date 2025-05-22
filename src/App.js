@@ -1,18 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MatriculePage from './MatriculePage';
 import './App.css';
-
+import EmployeeManager from './EmployeeManager';
 import QRCodeGenerator from './QRCodeGenerator';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <QRCodeGenerator />
-//     </div>
-//   );
-// }
-
-// export default App;
 
 function App() {
   return (
@@ -20,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<QRCodeGenerator />} />
         <Route path="/matricule" element={<MatriculePage />} />
+        <Route path="/employes" element={<EmployeeManager />} />
       </Routes>
     </Router>
   );
