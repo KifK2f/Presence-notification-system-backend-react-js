@@ -6,7 +6,8 @@ const QRCodeGenerator = () => {
 //   const url = "https://web.whatsapp.com"; 
   // const url = "https://172.30.80.1:3000/matricule";
   // const url = "http://192.168.1.70:3000/matricule";
-  const url = "http://192.168.0.109:3000/matricule";
+  // const url = "http://192.168.0.109:3000/matricule";
+  const url = "http://1192.168.1.70:3000/matricule";
   const qrRef = useRef(null); // Pour référencer le QR Code
 
   // Fonction pour télécharger l'image du QR Code

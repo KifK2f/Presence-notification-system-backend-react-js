@@ -1,25 +1,71 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
 
 const MatriculePage = () => {
   const [matricule, setMatricule] = useState('');
   const [employee, setEmployee] = useState(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  
+  const [hasPresenceToday, setHasPresenceToday] = useState(false);
+  const [showActionSelect, setShowActionSelect] = useState(false);
+  // const [selectedAction, setSelectedAction] = useState([]);
+  const [selectedAction, setSelectedAction] = useState('');
+  const [actionOptions, setActionOptions] = useState([]);
 
-  const handleSubmit = async () => {
+
+
+
+useEffect(() => {
+  const fetchActionTypes = async () => {
     try {
-      // const res = await axios.get(`http://192.168.1.70:8080/api/employees/employee/matricule/${matricule}`);
-      const res = await axios.get(`http://192.168.0.109:8080/api/employees/employee/matricule/${matricule}`);
-      setEmployee(res.data);
-      setError('');
-    } catch (err) {
-      setEmployee(null);
-      setError('Matricule introuvable.');
+      const res = await axios.get('http://192.168.1.70:8080/api/enums/actions');
+      setActionOptions(res.data); // tableau de strings ["ARRIVEE", "DEPART"]
+    } catch (error) {
+      console.error("Erreur lors du chargement des actions", error);
     }
   };
+
+  fetchActionTypes();
+}, []);
+
+
+  
+
+
+  const handleSubmit = async () => {
+  try {
+    // const res = await axios.get(`http://192.168.0.109:8080/api/employees/employee/matricule/${matricule}`);
+    // setEmployee(res.data.employee);
+    // setHasPresenceToday(res.data.hasPresenceToday);
+    // const res = await axios.get(`http://192.168.0.109:8080/api/employees/employee/matricule/${matricule}/check-presence`);
+    const res = await axios.get(`http://192.168.1.70:8080/api/employees/employee/matricule/${matricule}/check-presence`);
+    setEmployee(res.data.employee);
+    setHasPresenceToday(res.data.hasPresenceToday);
+
+
+    if (res.data.hasPresenceToday) {
+      setShowActionSelect(true); // Demander action manuellement
+    } else {
+      // Première fois, on envoie automatiquement "ARRIVEE"
+      // await axios.post(`http://192.168.0.109:8080/api/employees/employee/presence`, {
+      await axios.post(`http://192.168.1.70:8080/api/employees/employee/presence`, {
+        matricule: matricule,
+        action: 'ARRIVEE'
+      });
+      alert('Présence enregistrée automatiquement comme ARRIVEE');
+    }
+
+    setError('');
+  } catch (err) {
+    setEmployee(null);
+    setError('Matricule introuvable.');
+  }
+};
+
+
 
   return (
     <div style={styles.container}>
@@ -63,9 +109,80 @@ const MatriculePage = () => {
             <p><strong>Nom :</strong> {employee.lastName}</p>
             <p><strong>Prénom :</strong> {employee.firstName}</p>
             <p><strong>Matricule :</strong> {employee.matricule}</p> */}
-            <h3>Bon arrivée M/Mme {employee.lastName} {employee.firstName}</h3>
+            <h3>M/Mme {employee.lastName} {employee.firstName}</h3>
           </div>
         )}
+
+        {showActionSelect && (
+  <div>
+    <p>Vous avez déjà marqué votre présence aujourd’hui. Que voulez-vous faire ?</p>
+    {/* <select
+      value={selectedAction}
+      onChange={(e) => setSelectedAction(e.target.value)}
+      style={styles.input}
+    >
+      <option value="ARRIVEE">ARRIVEE</option>
+      <option value="DEPART">DEPART</option>
+    </select> */}
+
+<select
+  value={selectedAction}
+  onChange={(e) => setSelectedAction(e.target.value)}
+  style={styles.input}
+>
+  <option value="" disabled hidden>-- Sélectionner une action --</option>
+  {actionOptions.map((action) => (
+    <option key={action} value={action}>
+      {action}
+    </option>
+  ))}
+</select>
+
+
+
+    {/* <button
+      onClick={async () => {
+        // await axios.post(`http://192.168.0.109:8080/api/employees/employee/presence`, {
+        await axios.post(`http://192.168.1.70:8080/api/employees/employee/presence`, {
+          matricule,
+          action: selectedAction
+        });
+        alert(`Action ${selectedAction} enregistrée`);
+        setShowActionSelect(false);
+      }}
+      style={styles.button}
+    >
+      Enregistrer action
+    </button> */}
+
+    <button
+  onClick={async () => {
+    if (!selectedAction) {
+      alert('Veuillez sélectionner une action.');
+      return;
+    }
+
+    try {
+      await axios.post(`http://192.168.1.70:8080/api/employees/employee/presence`, {
+        matricule,
+        action: selectedAction
+      });
+      alert(`Action ${selectedAction} enregistrée`);
+      setShowActionSelect(false);
+    } catch (err) {
+      console.error("Erreur lors de l'enregistrement de l'action", err);
+      alert("Une erreur est survenue lors de l'enregistrement.");
+    }
+  }}
+  style={styles.button}
+>
+  Enregistrer action
+</button>
+
+
+  </div>
+)}
+
 
         {error && <p style={styles.error}>{error}</p>}
       </div>

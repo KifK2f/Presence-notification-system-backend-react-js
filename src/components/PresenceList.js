@@ -141,10 +141,11 @@ const exportToExcel = () => {
 
 
   return (
+    <div style={styles.container}>
     <div style={{ 
       padding: '20px', 
       fontFamily: 'Arial, sans-serif',
-      backgroundColor: 'white',
+      backgroundColor: '#fff9f2',
       minHeight: '100vh'
     }}>
             <div style={styles.headerBar}>
@@ -477,7 +478,7 @@ const exportToExcel = () => {
         </div>
       </div>
     </div>
-
+    </div>
     
   );
  
@@ -486,6 +487,12 @@ const exportToExcel = () => {
 
 // Styles avec responsive design
 const styles = {
+   container: {
+    padding: '20px',
+    background: '#fff9f2',
+    fontFamily: 'Segoe UI',
+    minHeight: '100vh',
+  },
 
   headerBar: {
     display: 'flex',

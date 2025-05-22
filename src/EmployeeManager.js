@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const API_URL = "http://192.168.0.109:8080/api/employees";
+// const API_URL = "http://192.168.0.109:8080/api/employees";
+const API_URL = "http://192.168.1.70:8080/api/employees";
 
 const EmployeeManager = () => {
   const [employees, setEmployees] = useState([]);
